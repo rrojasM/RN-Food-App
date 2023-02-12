@@ -4,6 +4,9 @@ import { RegisterAuthUseCase } from '../../../domain/useCases/auth/RegisterAuth'
 import { PermissionsAndroid } from 'react-native';
 import { RegisterWithImageAuthUseCase } from '../../../domain/useCases/auth/RegisterWithImageAuth';
 import * as ImagePicker from 'expo-image-picker';
+import { saveUserLocalUseCase } from '../../../domain/useCases/userLocal/SaveUserLocal';
+import { useUserLocal } from '../../hooks/useUserLocal';
+
 const RegisterViewModel = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [values, setValues] = useState({
@@ -15,7 +18,10 @@ const RegisterViewModel = () => {
         password: '',
         confirmPassword: '',
     });
+
+    const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<any>();
+    const { user, getUserSession } = useUserLocal();
 
     const requestCameraPermission = async () => {
         try {
@@ -74,10 +80,19 @@ const RegisterViewModel = () => {
 
     const register = async () => {
         if (isValidForm()) {
+            setLoading(true);
             //const response = await RegisterAuthUseCase(values);
             //console.log('THIS IS THE IMAGE: ', Object.values(file));
             const response = await RegisterWithImageAuthUseCase(values, file!);
             console.log('RESULT', JSON.stringify(response));
+            setLoading(false);
+
+            if (response.success) {
+                await saveUserLocalUseCase(response.data);
+                getUserSession();
+            } else {
+                setErrorMessage(response.message);
+            }
         }
     }
 
@@ -123,7 +138,10 @@ const RegisterViewModel = () => {
         register,
         errorMessage,
         pickImage,
-        takePhoto
+        takePhoto,
+        user,
+        getUserSession,
+        loading
     }
 }
 

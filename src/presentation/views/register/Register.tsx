@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Image, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, ToastAndroid, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import Button from '../../components/Button';
 import CustomTextInput from '../../components/CustomTextInput';
 import useViewModel from './ViewModel';
 import styles from './Styles';
 import { ModalPickImage } from '../../components/ModalPickImage';
+import { RootStackParamList } from '../../../../App';
+import { StackScreenProps } from '@react-navigation/stack';
+import { MyColors } from '../../theme/AppTheme';
 
-const Register = () => {
+interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'> { };
+
+const Register = ({ navigation, route }: Props) => {
     const { name, lastname, email, image, phone, password, confirmPassword, errorMessage,
-        onChange, register, pickImage, takePhoto } = useViewModel();
+        onChange, register, pickImage, takePhoto, user, loading } = useViewModel();
     const [modalVisible, setModalVisible] = useState(false);
+
     useEffect(() => {
         if (errorMessage != '') {
             ToastAndroid.show(errorMessage, ToastAndroid.LONG);
         }
-    }, [errorMessage])
+    }, [errorMessage]);
 
+    useEffect(() => {
+        if (user?.id !== null && user?.id !== undefined) {
+            navigation.replace('ProfileInfoScreen');
+        }
+    }, [user]);
 
     return (
         <View style={styles.container}>
@@ -96,6 +107,10 @@ const Register = () => {
                 modalUseState={modalVisible}
                 setModalUseState={setModalVisible}
             />
+            {
+                loading && <ActivityIndicator style={styles.loading} size="large" color={MyColors.primary} />
+            }
+
         </View>
     )
 }

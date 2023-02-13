@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { User } from '../../domain/entities/User';
 import { UserLocalRepository } from '../../domain/repositories/UserLocalRepository';
 import { LocalStorage } from '../sources/local/LocalStorage';
@@ -21,6 +22,5 @@ export class UserLocalRepositoryImpl implements UserLocalRepository {
         const { remove } = LocalStorage();
         await remove('user');
     }
-
 
 }

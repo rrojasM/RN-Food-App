@@ -26,7 +26,7 @@ const Home = ({ navigation, route }: Props) => {
             if (user.roles?.length > 1) {
                 navigation.replace('RolesScreen');
             } else {
-                navigation.replace('ProfileInfoScreen');
+                navigation.replace('ClientTabsNavigation');
             }
         }
     }, [user])

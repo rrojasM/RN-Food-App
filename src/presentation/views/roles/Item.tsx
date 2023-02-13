@@ -2,16 +2,26 @@ import React from 'react';
 import { Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { Rol } from '../../../domain/entities/Rol';
 import { MyColors } from '../../theme/AppTheme';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../../App';
 interface Props {
     rol: Rol,
     height: number,
     width: number,
+    navigation: StackNavigationProp<RootStackParamList, "RolesScreen", undefined>
 }
 
-const RolesItem = ({ rol, height, width }: Props) => {
+const RolesItem = ({ rol, height, width, navigation }: Props) => {
     return (
         <TouchableOpacity
             style={{ ...styles.container, height: height, width: width }}
+            onPress={() => {
+                if (rol.name === 'ADMIN') {
+                    navigation.replace('AdminTabsNavigation');
+                } else if (rol.name === 'CLIENTE') {
+                    navigation.replace('ClientTabsNavigation');
+                }
+            }}
         >
             <View style={styles.imageContainer}>
                 <Image

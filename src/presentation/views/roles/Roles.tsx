@@ -4,8 +4,12 @@ import useViewModel from './ViewModel';
 import RolesItem from './Item';
 import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { RootStackParamList } from '../../../../App';
+import { StackScreenProps } from '@react-navigation/stack';
 
-export const RolesScreen = () => {
+interface Props extends StackScreenProps<RootStackParamList, 'RolesScreen'> { };
+
+export const RolesScreen = ({ navigation, route }: Props) => {
 
     const { user } = useViewModel();
     const width = Dimensions.get('window').width;
@@ -40,6 +44,7 @@ export const RolesScreen = () => {
                         rol={item}
                         height={420}
                         width={width - 20}
+                        navigation={navigation}
                     />}
 
                     modeConfig={{

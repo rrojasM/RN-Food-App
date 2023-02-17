@@ -12,8 +12,9 @@ import { MyColors } from '../../../theme/AppTheme';
 interface Props extends StackScreenProps<RootStackParamList, 'ProfileUpdateScreen'> { };
 
 const ProfileUpdateScreen = ({ navigation, route }: Props) => {
+    const { user } = route.params;
     const { name, lastname, image, phone, errorMessage,
-        onChange, onChangeInfoUpdate, register, pickImage, takePhoto, user, loading } = useViewModel();
+        onChange, onChangeInfoUpdate, update, pickImage, takePhoto, loading } = useViewModel(user);
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -22,9 +23,9 @@ const ProfileUpdateScreen = ({ navigation, route }: Props) => {
         }
     }, [errorMessage]);
 
-    useEffect(() => {
-        onChangeInfoUpdate(user?.name, user?.lastname, user?.lastname);
-    }, [user])
+    /*  useEffect(() => {
+         onChangeInfoUpdate(user?.name, user?.lastname, user?.lastname);
+     }, [user]) */
 
 
     return (
@@ -71,7 +72,7 @@ const ProfileUpdateScreen = ({ navigation, route }: Props) => {
                 />
 
                 <View style={{ margin: 50 }}>
-                    <Button text='CONFIRMAR' onPress={() => register()} />
+                    <Button text='CONFIRMAR' onPress={() => update()} />
                 </View>
             </ScrollView>
 

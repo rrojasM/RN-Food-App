@@ -8,6 +8,7 @@ import { RolesScreen } from './src/presentation/views/roles/Roles';
 import { AdminTabsNavigation } from './src/presentation/navigation/AdminTabsNavigation';
 import { ClientTabsNavigation } from './src/presentation/navigation/ClientTabsNavigation copy';
 import ProfileUpdate from './src/presentation/views/profile/update/ProfileUpdate';
+import { User } from './src/domain/entities/User';
 
 export type RootStackParamList = {
   Home: undefined,
@@ -16,7 +17,7 @@ export type RootStackParamList = {
   RolesScreen: undefined,
   AdminTabsNavigation: undefined,
   ClientTabsNavigation: undefined,
-  ProfileUpdateScreen: undefined
+  ProfileUpdateScreen: { user: User }
 
 }
 

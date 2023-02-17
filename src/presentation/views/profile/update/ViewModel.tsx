@@ -1,27 +1,21 @@
 import React, { useState } from 'react';
 import { ApiDelivery } from '../../../../data/sources/remote/api/ApiDelivery';
-import { RegisterAuthUseCase } from '../../../../domain/useCases/auth/RegisterAuth';
 import { PermissionsAndroid } from 'react-native';
-import { RegisterWithImageAuthUseCase } from '../../../../domain/useCases/auth/RegisterWithImageAuth';
 import * as ImagePicker from 'expo-image-picker';
 import { saveUserLocalUseCase } from '../../../../domain/useCases/userLocal/SaveUserLocal';
 import { useUserLocal } from '../../../hooks/useUserLocal';
+import { UpdateUser } from '../../../../domain/useCases/user/UpdateUser';
+import { UpdateUserWithImage } from '../../../../domain/useCases/user/UpdateUserWithImage';
+import { User } from '../../../../domain/entities/User';
+import { ResponseAPIDelivery } from '../../../../data/sources/remote/models/ResponseApiDelivery';
 
-const ProfileUpdateViewModel = () => {
+const ProfileUpdateViewModel = (user: User) => {
     const [errorMessage, setErrorMessage] = useState('');
-    const [values, setValues] = useState({
-        name: '',
-        lastname: '',
-        phone: '',
-        email: '',
-        image: '',
-        password: '',
-        confirmPassword: '',
-    });
+    const [values, setValues] = useState(user);
 
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<any>();
-    const { user, getUserSession } = useUserLocal();
+    const { getUserSession } = useUserLocal();
 
     const requestCameraPermission = async () => {
         try {
@@ -81,18 +75,22 @@ const ProfileUpdateViewModel = () => {
         setValues({ ...values, name, lastname, phone });
     }
 
-    const register = async () => {
+    const update = async () => {
         if (isValidForm()) {
             setLoading(true);
-            //const response = await RegisterAuthUseCase(values);
-            //console.log('THIS IS THE IMAGE: ', Object.values(file));
-            const response = await RegisterWithImageAuthUseCase(values, file!);
+            let response = {} as ResponseAPIDelivery;
+            if (values.image?.includes('https://')) {
+                response = await UpdateUser(values);
+            } else {
+                response = await UpdateUserWithImage(values, file!);
+
+            }
             console.log('RESULT', JSON.stringify(response));
             setLoading(false);
-
             if (response.success) {
                 await saveUserLocalUseCase(response.data);
                 getUserSession();
+
             } else {
                 setErrorMessage(response.message);
             }
@@ -112,17 +110,14 @@ const ProfileUpdateViewModel = () => {
             setErrorMessage('Ingresa tu telefono')
             return false
         }
-        if (values.image === '') {
-            setErrorMessage('Selecciona una Imagen')
-            return false
-        }
+
         return true;
     }
 
     return {
         ...values,
         onChange,
-        register,
+        update,
         errorMessage,
         pickImage,
         takePhoto,

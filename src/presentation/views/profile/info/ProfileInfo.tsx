@@ -77,7 +77,7 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
 
                 <Button
                     onPress={() => {
-                        navigation.navigate(('ProfileUpdateScreen'))
+                        navigation.navigate('ProfileUpdateScreen', { user: user! })
                     }}
                     text="ACTUALIZAR"
                 />

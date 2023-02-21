@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { RootStackParamList } from '../../../../../App';
 import useViewModel from './ViewModel';
@@ -8,7 +8,14 @@ import Button from '../../../components/Button';
 
 interface Props extends StackScreenProps<RootStackParamList> { };
 export const ProfileInfoScreen = ({ navigation, route }: Props) => {
-    const { removeSession, user } = useViewModel();
+    const { removeUserSession, user } = useViewModel();
+
+    useEffect(() => {
+        if (user.id === '') {
+            navigation.replace('Home');
+        }
+    }, [user]);
+
     return (
         <View style={styles.container}>
 
@@ -24,8 +31,8 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
                             {
                                 text: "OK",
                                 onPress: () => {
-                                    removeSession();
-                                    navigation.navigate('Home');
+                                    removeUserSession();
+                                    //navigation.navigate('Home');
                                 },
                             },
                             {
@@ -41,7 +48,7 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
             </TouchableOpacity>
 
             <View style={styles.logoContainer}>
-                <Image style={styles.logoImage} source={{ uri: user?.image }} />
+                {user?.image !== '' && <Image style={styles.logoImage} source={{ uri: user?.image }} />}
             </View>
             <View style={styles.formLogin}>
                 <View style={styles.formInfo}>

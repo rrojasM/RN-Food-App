@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { ApiDelivery } from '../../../../data/sources/remote/api/ApiDelivery';
 import { PermissionsAndroid } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -8,14 +8,18 @@ import { UpdateUser } from '../../../../domain/useCases/user/UpdateUser';
 import { UpdateUserWithImage } from '../../../../domain/useCases/user/UpdateUserWithImage';
 import { User } from '../../../../domain/entities/User';
 import { ResponseAPIDelivery } from '../../../../data/sources/remote/models/ResponseApiDelivery';
+import { UserContext } from '../../../context/UserContext';
 
 const ProfileUpdateViewModel = (user: User) => {
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+
     const [values, setValues] = useState(user);
 
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<any>();
     const { getUserSession } = useUserLocal();
+    const { saveUserSession } = useContext(UserContext);
 
     const requestCameraPermission = async () => {
         try {
@@ -88,8 +92,10 @@ const ProfileUpdateViewModel = (user: User) => {
             console.log('RESULT', JSON.stringify(response));
             setLoading(false);
             if (response.success) {
-                await saveUserLocalUseCase(response.data);
-                getUserSession();
+                //await saveUserLocalUseCase(response.data);
+                //getUserSession();
+                saveUserSession(response.data);
+                setSuccessMessage('Datos actualizados correctamente!')
 
             } else {
                 setErrorMessage(response.message);
@@ -119,6 +125,7 @@ const ProfileUpdateViewModel = (user: User) => {
         onChange,
         update,
         errorMessage,
+        successMessage,
         pickImage,
         takePhoto,
         user,

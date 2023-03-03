@@ -46,15 +46,25 @@ const RegisterViewModel = () => {
     }
 
     const takePhoto = async () => {
-        await requestCameraPermission();
 
-        /* let result = await ImagePicker.launchCameraAsync({
+        let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            quality: 1
-        }); */
+            aspect: [4, 3],
+            quality: 1,
+        });
 
-        const result = await ImagePicker.launchCameraAsync();
+        console.log(result);
+
+        //await requestCameraPermission();
+
+        /*   let result = await ImagePicker.launchCameraAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
+              allowsEditing: true,
+              quality: 1
+          });
+  
+          result = await ImagePicker.launchCameraAsync(); */
 
         if (!result.cancelled) {
             //@ts-ignore

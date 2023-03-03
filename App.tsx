@@ -13,6 +13,8 @@ import { UserProvider } from './src/presentation/context/UserContext';
 import { AdminCategoryCreateScreen } from './src/presentation/views/admin/category/create/CategoryCreate';
 import { AdminCategoryUpdate } from './src/presentation/views/admin/category/update/CategoryUpdate';
 import { Category } from './src/domain/entities/Category';
+import { CategoryProvider } from './src/presentation/context/CategoryContext';
+import { MainStackNavigator } from './src/presentation/navigation/MainStackNavigator';
 
 export type RootStackParamList = {
   Home: undefined,
@@ -32,87 +34,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const App = () => {
   return (
     <NavigationContainer>
-      <UserState>
-
-        <Stack.Navigator screenOptions={{
-          headerShown: false
-        }}>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-          />
-          <Stack.Screen
-            name="RegisterScreen"
-            component={Register}
-            options={{
-              headerShown: true,
-              title: 'Nuevo Usuario'
-            }}
-          />
-
-          {/* <Stack.Screen
-          name="ProfileInfoScreen"
-          component={ProfileInfoScreen}
-        /> */}
-
-          <Stack.Screen
-            name="RolesScreen"
-            component={RolesScreen}
-            options={{
-              headerShown: true,
-              title: 'Seleciona un Rol'
-            }}
-          />
-
-          <Stack.Screen
-            name="AdminTabsNavigation"
-            component={AdminTabsNavigation}
-          />
-
-          <Stack.Screen
-            name="ClientTabsNavigation"
-            component={ClientTabsNavigation}
-          />
-
-          <Stack.Screen
-            name="ProfileUpdateScreen"
-            component={ProfileUpdate}
-            options={{
-              headerShown: true,
-              title: 'Actualizar Usuario'
-            }}
-          />
-
-          <Stack.Screen
-            name="AdminCategoryCreateScreen"
-            component={AdminCategoryCreateScreen}
-            options={{
-              headerShown: true,
-              title: 'Nueva Categoria'
-            }}
-          />
-          <Stack.Screen
-            name="AdminCategoryUpdate"
-            component={AdminCategoryUpdate}
-            options={{
-              headerShown: true,
-              title: 'Editar Categoria'
-            }}
-          />
-
-        </Stack.Navigator>
-      </UserState>
-
+      <MainStackNavigator />
     </NavigationContainer>
   );
 };
-
-const UserState = ({ children }: any) => {
-  return (
-    <UserProvider>
-      {children}
-    </UserProvider>
-  )
-}
 
 export default App;

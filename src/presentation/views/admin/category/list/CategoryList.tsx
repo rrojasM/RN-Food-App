@@ -4,11 +4,9 @@ import useViewModel from './ViewModel';
 import CategoryItem from './Item';
 
 const AdminCategoryListScreen = () => {
-    const { categories, getCategory, responseMessage, deleteCategory } = useViewModel();
+    const { categories, getAll, responseMessage, deleteCategory } = useViewModel();
 
-    useEffect(() => {
-        getCategory();
-    }, []);
+
 
     useEffect(() => {
         if (responseMessage !== '') {

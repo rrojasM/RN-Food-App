@@ -44,15 +44,13 @@ const ProfileUpdateViewModel = (user: User) => {
     }
 
     const takePhoto = async () => {
-        await requestCameraPermission();
-
-        /* let result = await ImagePicker.launchCameraAsync({
+        let result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             quality: 1
-        }); */
+        });
 
-        const result = await ImagePicker.launchCameraAsync();
+        result = await ImagePicker.launchCameraAsync();
 
         if (!result.cancelled) {
             //@ts-ignore

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { CreateCategoryCase } from '../../../../../domain/useCases/category/CreateCategory';
+import { CategoryContext } from '../../../../context/CategoryContext';
 
 const CategoryViewModel = () => {
     const [values, setValues] = useState({
@@ -12,13 +13,16 @@ const CategoryViewModel = () => {
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<any>();
 
+    const { create } = useContext(CategoryContext);
+
+
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
     }
 
     const createCategory = async () => {
         setLoading(true);
-        const res = await CreateCategoryCase(values, file);
+        const res = await create(values, file);
         if (res.success) {
             setResMessage(res.message);
             setLoading(false);

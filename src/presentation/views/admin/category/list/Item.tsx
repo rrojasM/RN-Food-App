@@ -4,6 +4,7 @@ import { Image, View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-na
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../../../App';
+import { CategoryStackParamList } from '../../../../navigation/AdminCategoryNavigator';
 
 interface Props {
     category: Category;
@@ -11,9 +12,9 @@ interface Props {
 }
 
 const CategoryItem = ({ category, remove }: Props) => {
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<StackNavigationProp<CategoryStackParamList>>();
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AdminProductNavigator', { category: category })}>
             <View style={styles.container}>
                 <Image source={{ uri: category.image }} style={styles.image} />
                 <View style={styles.info}>

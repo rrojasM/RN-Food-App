@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { UpdateCategoryCase } from '../../../../../domain/useCases/category/UpdateCategory';
 import { UpdateWithImageCategoryCase } from '../../../../../domain/useCases/category/UpdateWithImageCategory';
 import { Category } from '../../../../../domain/entities/Category';
 import { ResponseAPIDelivery } from '../../../../../data/sources/remote/models/ResponseApiDelivery';
+import { CategoryContext } from '../../../../context/CategoryContext';
 
 const CategoryUpdateViewModel = (category: Category) => {
     const [values, setValues] = useState(category);
     const [resMessage, setResMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<any>();
+
+    const { update, updateWithImage } = useContext(CategoryContext);
+
 
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
@@ -19,9 +23,9 @@ const CategoryUpdateViewModel = (category: Category) => {
         setLoading(true);
         let response = {} as ResponseAPIDelivery;
         if (values.image?.includes('https://')) {
-            response = await UpdateCategoryCase(values);
+            response = await update(values);
         } else {
-            response = await UpdateWithImageCategoryCase(values, file);
+            response = await updateWithImage(values, file);
         }
 
         setLoading(false);

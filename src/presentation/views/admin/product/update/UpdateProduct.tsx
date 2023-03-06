@@ -10,12 +10,12 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { ProductStackParamList } from '../../../../navigation/AdminProductNavigator';
 import { ModalPickMultiImage } from '../../../../components/ModalPickMultiImage';
 
-interface Props extends StackScreenProps<ProductStackParamList, 'AdminProductCreateScreen'> { };
+interface Props extends StackScreenProps<ProductStackParamList, 'AdminProductUpdateScreen'> { };
 
-export const AdminProductCreateScreen = ({ navigation, route }: Props) => {
-    const { category } = route.params;
+export const AdminProductUpdateScreen = ({ navigation, route }: Props) => {
+    const { category, product } = route.params;
 
-    const { name, description, price, image1, image2, image3, onChange, pickImage, loading, resMessage, createProduct } = useViewModel(category);
+    const { name, description, price, image1, image2, image3, onChange, pickImage, loading, resMessage, createProduct } = useViewModel(product, category);
     const [modalVisible, setModalVisible] = useState(false);
     const [numberImage, setNumberImage] = useState(1);
 
@@ -92,7 +92,7 @@ export const AdminProductCreateScreen = ({ navigation, route }: Props) => {
                         image={require('../../../../../assets/price.png')}
                         keyboardType='numeric'
                         property='price'
-                        value={price}
+                        value={`${price}`}
                         onChangeText={onChange}
                     />
 

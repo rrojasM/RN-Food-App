@@ -32,4 +32,27 @@ export class ProductRepositoryImpl implements ProductRepository {
             return Promise.resolve(apiError);
         }
     }
+
+    async getProductByCategory(id_category: string): Promise<Product[]> {
+        try {
+            const res = await ApiDelivery.get<Product[]>(`/products/findByCategory/${id_category}`);
+            return Promise.resolve(res.data);
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('ERROR AL OBTENER PRODUCTS LIST: ', JSON.stringify(e.response?.data));
+            return Promise.resolve([]);
+        }
+    }
+
+    async remove(product: Product): Promise<ResponseAPIDelivery> {
+        try {
+            const res = await ApiDelivery.delete<ResponseAPIDelivery>(`/products/delete/${product.id}`);
+            return Promise.resolve(res.data);
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('ERROR AL ELIMINAR PRODUCT: ', JSON.stringify(e.response?.data));
+            const apiError: ResponseAPIDelivery = JSON.parse(JSON.stringify(e.response?.data));
+            return Promise.resolve(apiError);
+        }
+    }
 }

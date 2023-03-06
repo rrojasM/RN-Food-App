@@ -6,8 +6,6 @@ import CategoryItem from './Item';
 const AdminCategoryListScreen = () => {
     const { categories, getAll, responseMessage, deleteCategory } = useViewModel();
 
-
-
     useEffect(() => {
         if (responseMessage !== '') {
             ToastAndroid.show(responseMessage, ToastAndroid.LONG);

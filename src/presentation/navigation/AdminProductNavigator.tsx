@@ -7,11 +7,14 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { CategoryStackParamList } from './AdminCategoryNavigator';
 import { AdminProductCreateScreen } from '../views/admin/product/create/ProductCreate';
 import { ProductProvider } from '../context/ProductContext';
+import { AdminProductUpdateScreen } from '../views/admin/product/update/UpdateProduct';
+import { Product } from '../../domain/entities/Product';
 
 
 export type ProductStackParamList = {
     AdminProductListScreen: { category: Category },
     AdminProductCreateScreen: { category: Category },
+    AdminProductUpdateScreen: { category: Category, product: Product }
 }
 const Stack = createNativeStackNavigator<ProductStackParamList>();
 
@@ -59,6 +62,16 @@ export const AdminProductNavigator = ({ navigation, route }: Props) => {
                     initialParams={{ category: route.params.category }}
                     options={{
                         title: 'Nuevo Producto',
+                        headerShown: true
+                    }}
+                />
+
+                <Stack.Screen
+                    name='AdminProductUpdateScreen'
+                    component={AdminProductUpdateScreen}
+                    //initialParams={{ category: route.params.category }}
+                    options={{
+                        title: 'Actualizar Producto',
                         headerShown: true
                     }}
                 />

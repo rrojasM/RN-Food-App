@@ -7,7 +7,7 @@ import { Category } from '../../domain/entities/Category';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RolesScreen } from '../views/roles/Roles';
 import { AdminTabsNavigation } from './AdminTabsNavigation';
-import { ClientTabsNavigation } from './ClientTabsNavigation copy';
+import { ClientTabsNavigation } from './ClientTabsNavigator';
 import { AdminCategoryCreateScreen } from '../views/admin/category/create/CategoryCreate';
 import { AdminCategoryUpdate } from '../views/admin/category/update/CategoryUpdate';
 import ProfileUpdate from '../views/profile/update/ProfileUpdate';

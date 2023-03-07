@@ -6,7 +6,7 @@ import Register from './src/presentation/views/register/Register';
 import { ProfileInfoScreen } from './src/presentation/views/profile/info/ProfileInfo';
 import { RolesScreen } from './src/presentation/views/roles/Roles';
 import { AdminTabsNavigation } from './src/presentation/navigation/AdminTabsNavigation';
-import { ClientTabsNavigation } from './src/presentation/navigation/ClientTabsNavigation copy';
+import { ClientTabsNavigation } from './src/presentation/navigation/ClientTabsNavigator';
 import ProfileUpdate from './src/presentation/views/profile/update/ProfileUpdate';
 import { User } from './src/domain/entities/User';
 import { UserProvider } from './src/presentation/context/UserContext';

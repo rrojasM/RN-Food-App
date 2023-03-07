@@ -3,16 +3,18 @@ import { ProfileInfoScreen } from '../views/profile/info/ProfileInfo';
 import ClientCategoryListScreen from '../views/client/category/list/CategoryList';
 import ClientOrderListScreen from '../views/client/order/list/OrderList';
 import { Image } from 'react-native';
+import { ClientStackNavigator } from './ClientStackNavigator';
 const Tab = createBottomTabNavigator();
 
 export const ClientTabsNavigation = () => {
     return (
         <Tab.Navigator>
             <Tab.Screen
-                name='ClientCategoryList'
-                component={ClientCategoryListScreen}
+                name='ClientStackNavigator'
+                component={ClientStackNavigator}
                 options={{
                     title: 'Categorias',
+                    headerShown: false,
                     tabBarLabel: 'Categorias',
                     tabBarIcon: ({ color }) => (
                         <Image

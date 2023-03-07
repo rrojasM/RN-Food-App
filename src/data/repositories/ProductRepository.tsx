@@ -44,6 +44,43 @@ export class ProductRepositoryImpl implements ProductRepository {
         }
     }
 
+    async update(product: Product): Promise<ResponseAPIDelivery> {
+        try {
+            const res = await ApiDelivery.put<ResponseAPIDelivery>('/products/update', product);
+            return Promise.resolve(res.data);
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('ERROR AL EJECUTAR UPDATE PRODUCT: ', JSON.stringify(e.response?.data));
+            const apiError: ResponseAPIDelivery = JSON.parse(JSON.stringify(e.response?.data));
+            return Promise.resolve(apiError);
+        }
+    }
+
+    async updateWithImage(product: Product, files: ImageInfo[]): Promise<ResponseAPIDelivery> {
+        try {
+            let data = new FormData();
+
+            files.forEach(file => {
+                data.append('image', {
+                    //@ts-ignore
+                    uri: file.uri,
+                    name: file.uri.split('/').pop(),
+                    type: mime.getType(file.uri)!
+                });
+            });
+
+            data.append('product', JSON.stringify(product));
+
+            const res = await ApiDeliveryWithImage.put<ResponseAPIDelivery>('/products/updateWithImage', data);
+            return Promise.resolve(res.data);
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('ERROR AL EJECUTAR UPDATE PRODUCT: ', JSON.stringify(e.response?.data));
+            const apiError: ResponseAPIDelivery = JSON.parse(JSON.stringify(e.response?.data));
+            return Promise.resolve(apiError);
+        }
+    }
+
     async remove(product: Product): Promise<ResponseAPIDelivery> {
         try {
             const res = await ApiDelivery.delete<ResponseAPIDelivery>(`/products/delete/${product.id}`);

@@ -5,6 +5,7 @@ import { CategoryContext } from '../../../../context/CategoryContext';
 import { Category } from '../../../../../domain/entities/Category';
 import { ProductContext } from '../../../../context/ProductContext';
 import { Product } from '../../../../../domain/entities/Product';
+import { ResponseAPIDelivery } from '../../../../../data/sources/remote/models/ResponseApiDelivery';
 
 const UpdateProductViewModel = (product: Product, category: Category) => {
     const [values, setValues] = useState(product);
@@ -16,14 +17,14 @@ const UpdateProductViewModel = (product: Product, category: Category) => {
     const [file2, setFile2] = useState<any>();
     const [file3, setFile3] = useState<any>();
 
-    const { create } = useContext(ProductContext);
+    const { update, updateWithImage } = useContext(ProductContext);
 
 
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
     }
 
-    const createProduct = async () => {
+    const updateProduct = async () => {
 
         let files = [];
         files.push(file1);
@@ -31,33 +32,31 @@ const UpdateProductViewModel = (product: Product, category: Category) => {
         files.push(file3);
 
         setLoading(true);
-        const res = await create(values, files);
-        if (res.success) {
-            setResMessage(res.message);
-            setLoading(false);
-            resetForm();
+        let res = {} as ResponseAPIDelivery;
+        if (values.image1.includes('https://') && values.image2.includes('https://') && values.image3.includes('https://')) {
+            res = await update(values);
+            if (res.success) {
+                setResMessage(res.message);
+                setLoading(false);
+
+            } else {
+                setResMessage(res.message);
+                setLoading(false);
+
+            }
         } else {
-            setResMessage(res.message);
-            setLoading(false);
-            resetForm();
-        }
+            res = await updateWithImage(values, files);
+            if (res.success) {
+                setResMessage(res.message);
+                setLoading(false);
 
+            } else {
+                setResMessage(res.message);
+                setLoading(false);
+
+            }
+        }
     }
-
-    /* const takePhoto = async () => {
-
-        let result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            quality: 1
-        });
-
-        if (!result.cancelled) {
-            //@ts-ignore
-            onChange('image', result.uri);
-            setFile(result);
-        }
-    } */
 
     const pickImage = async (numberImage: number) => {
         const result = await ImagePicker.launchImageLibraryAsync();
@@ -83,27 +82,13 @@ const UpdateProductViewModel = (product: Product, category: Category) => {
         }
     }
 
-    const resetForm = async () => {
-        setValues({
-            name: '',
-            description: '',
-            price: 0,
-            image1: '',
-            image2: '',
-            image3: '',
-            id_category: '',
-        })
-    }
-
     return {
         ...values,
         onChange,
-        //takePhoto,
         pickImage,
         loading,
         resMessage,
-        //createCategory
-        createProduct
+        updateProduct
     }
 }
 

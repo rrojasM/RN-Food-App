@@ -14,7 +14,7 @@ interface Props extends StackScreenProps<ClientStackParamList, 'ClientProductDet
 const ClientProductDetail = ({ navigation, route }: Props) => {
 
     const { product } = route.params;
-    const { productImages } = useViewModel(product);
+    const { productImages, quantity, price, addItem, removeItem, shoppingProducts, addCart } = useViewModel(product);
     const width = Dimensions.get('window').width;
     const height = Dimensions.get('window').height;
 
@@ -23,15 +23,17 @@ const ClientProductDetail = ({ navigation, route }: Props) => {
 
     return (
         <View style={styles.container}>
+
             <GestureHandlerRootView>
                 <Carousel
-                    loop={true}
+                    loop={false}
                     width={width}
                     //height={height / 1.5}
                     height={height}
-                    autoPlay={true}
+                    autoPlay={false}
                     data={productImages}
-                    scrollAnimationDuration={10000}
+                    autoPlayInterval={10000}
+                    scrollAnimationDuration={1000}
                     /* onSnapToItem={(index) => console.log('CURRENT INDEX', index)} */
 
                     renderItem={({ item }) => <Image style={styles.productImage} source={{ uri: item }} />}
@@ -55,26 +57,31 @@ const ClientProductDetail = ({ navigation, route }: Props) => {
                     <View style={styles.divider} />
 
                     <Text style={styles.titleDesc}>Tu orden</Text>
-                    <Text style={styles.description}>Cantidad: </Text>
-                    <Text style={styles.description}>Precio C/U: </Text>
+                    <Text style={styles.description}>Cantidad: {quantity} </Text>
+                    <Text style={styles.description}>Precio Total: {currencyFormat(price)} </Text>
                     <View style={styles.divider} />
                 </View>
+
+                {/* ACTIONS ADD OR REMOVE */}
                 <View style={styles.productActions}>
-                    <TouchableOpacity style={styles.actionLess}>
+                    <TouchableOpacity onPress={() => removeItem()} style={styles.actionLess}>
                         <Text style={styles.actionText}>-</Text>
                     </TouchableOpacity>
                     <View style={styles.quantity}>
-                        <Text style={styles.actionText}>0</Text>
+                        <Text style={styles.actionText}>{quantity}</Text>
                     </View>
-                    <TouchableOpacity style={styles.actionMore}>
+                    <TouchableOpacity onPress={() => addItem()} style={styles.actionMore}>
                         <Text style={styles.actionText}>+</Text>
                     </TouchableOpacity>
 
                     <View style={styles.buttonAdd}>
-                        <Button text='AGREGAR' onPress={() => { }} />
+                        <Button text='AGREGAR' onPress={() => addCart()} />
                     </View>
                 </View>
             </View>
+            <TouchableOpacity onPress={() => navigation.pop()} style={styles.back}>
+                <Image source={require('../../../../../assets/back.png')} style={styles.backImage} />
+            </TouchableOpacity>
         </View>
     )
 }

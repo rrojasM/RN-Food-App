@@ -1,14 +1,17 @@
+import { Image, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ClientCategoryListScreen from '../views/client/category/list/CategoryList';
 import ClientProductListScreen from '../views/client/product/list/ProductList';
 import ClientProductDetail from "../views/client/product/detail/ProductDetail";
 import { Product } from '../../domain/entities/Product';
 import { ShoppingProvider } from "../context/ShoppingContext";
+import ClientShoppingCartScreen from "../views/client/cart/ShoppingCart";
 
 export type ClientStackParamList = {
     ClientCategoryListScreen: undefined,
     ClientProductListScreen: { id_category: string },
-    ClientProductDetail: { product: Product }
+    ClientProductDetail: { product: Product },
+    ClientShoppingCartScreen: undefined
 }
 
 const Stack = createNativeStackNavigator<ClientStackParamList>();
@@ -22,21 +25,53 @@ export const ClientStackNavigator = () => {
                 <Stack.Screen
                     name='ClientCategoryListScreen'
                     component={ClientCategoryListScreen}
-                    options={{ headerShown: true, title: 'Categorias' }}
+                    options={({ route, navigation }) => (
+                        {
+                            title: 'Categorias',
+                            headerShown: true,
+                            headerRight: () => (
+                                <TouchableOpacity onPress={() => navigation.navigate('ClientShoppingCartScreen')}>
+                                    <Image
+                                        source={require('../../assets/shopping_cart.png')}
+                                        style={{ width: 35, height: 35, marginRight: 0 }}
+                                    />
+                                </TouchableOpacity>
+                            )
+                        }
+                    )}
                 />
 
                 <Stack.Screen
                     name='ClientProductListScreen'
                     component={ClientProductListScreen}
-                    options={{
-                        headerShown: true,
-                        title: 'Productos'
-                    }}
+                    options={({ route, navigation }) => (
+                        {
+                            title: 'Productos',
+                            headerShown: true,
+                            headerRight: () => (
+                                <TouchableOpacity onPress={() => navigation.navigate('ClientShoppingCartScreen')}>
+                                    <Image
+                                        source={require('../../assets/shopping_cart.png')}
+                                        style={{ width: 35, height: 35, marginRight: 0 }}
+                                    />
+                                </TouchableOpacity>
+                            )
+                        }
+                    )}
                 />
 
                 <Stack.Screen
                     name='ClientProductDetail'
                     component={ClientProductDetail}
+                />
+
+                <Stack.Screen
+                    name='ClientShoppingCartScreen'
+                    component={ClientShoppingCartScreen}
+                    options={{
+                        title: 'Mi Orden',
+                        headerShown: true,
+                    }}
                 />
             </Stack.Navigator>
         </ShoppingState>

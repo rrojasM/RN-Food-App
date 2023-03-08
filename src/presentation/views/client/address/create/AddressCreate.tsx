@@ -6,8 +6,12 @@ import useViewModel from './ViewModel';
 import Button from '../../../../components/Button';
 import { ModalPickImage } from '../../../../components/ModalPickImage';
 import { MyColors } from '../../../../theme/AppTheme';
+import { StackScreenProps } from '@react-navigation/stack';
+import { ClientStackParamList } from '../../../../navigation/ClientStackNavigator';
 
-export const AddressCreateScreen = () => {
+interface Props extends StackScreenProps<ClientStackParamList, 'AddressCreateScreen'> { };
+
+export const AddressCreateScreen = ({ navigation, route }: Props) => {
 
     const { address, location, references, onChange, loading, resMessage, saveAddress } = useViewModel();
     const [modalVisible, setModalVisible] = useState(false);
@@ -27,8 +31,8 @@ export const AddressCreateScreen = () => {
 
             <View style={styles.form}>
                 <CustomTextInput
-                    placeholder='Nombre Dirección'
-                    image={require('../../../../../assets/location_home.png')}
+                    placeholder='Dirección'
+                    image={require('../../../../../assets/location.png')}
                     keyboardType='default'
                     property='address'
                     value={address}
@@ -42,14 +46,17 @@ export const AddressCreateScreen = () => {
                     value={location}
                     onChangeText={onChange}
                 />
-                <CustomTextInput
-                    placeholder='Referencias'
-                    image={require('../../../../../assets/ref_point.png')}
-                    keyboardType='default'
-                    property='references'
-                    value={references}
-                    onChangeText={onChange}
-                />
+                <TouchableOpacity onPress={() => navigation.navigate('ClientAddressMapScreen')}>
+                    <CustomTextInput
+                        placeholder='Referencias'
+                        image={require('../../../../../assets/ref_point.png')}
+                        keyboardType='default'
+                        property='references'
+                        value={references}
+                        onChangeText={onChange}
+                        editable={false}
+                    />
+                </TouchableOpacity>
             </View>
             <View style={styles.buttonContainer}>
                 <Button

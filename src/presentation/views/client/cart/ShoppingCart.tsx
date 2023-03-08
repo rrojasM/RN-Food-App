@@ -4,8 +4,12 @@ import useViewModel from './ViewModel';
 import { CartItem } from './Item';
 import Button from '../../../components/Button';
 import { currencyFormat } from '../../../utils/CurrencyFormat';
+import { ClientStackParamList } from '../../../navigation/ClientStackNavigator';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const ClientShoppingCartScreen = () => {
+interface Props extends StackScreenProps<ClientStackParamList, 'ClientShoppingCartScreen'> { };
+
+const ClientShoppingCartScreen = ({ navigation, route }: Props) => {
     const { shoppingProducts, total, addItem, restItem, deleteItem } = useViewModel();
 
     return (
@@ -21,7 +25,7 @@ const ClientShoppingCartScreen = () => {
                     <Text>{currencyFormat(total)}</Text>
                 </View>
                 <View style={styles.buttonAdd}>
-                    <Button text='CONFIRMAR ORDEN' onPress={() => { }} />
+                    <Button text='CONFIRMAR ORDEN' onPress={() => navigation.navigate(('AddressListScreen'))} />
                 </View>
             </View>
         </View>

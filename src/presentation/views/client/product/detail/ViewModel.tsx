@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Product } from '../../../../../domain/entities/Product';
 import { ShoppingContext } from '../../../../context/ShoppingContext';
+import { ToastAndroid } from 'react-native';
 
 const ProductDetailViewModel = (product: Product) => {
     const productImages: string[] = [
@@ -32,6 +33,7 @@ const ProductDetailViewModel = (product: Product) => {
         if (quantity > 0) {
             product.quantity = quantity;
             saveItem(product);
+            ToastAndroid.show('Producto agregado al Carrito', ToastAndroid.LONG);
         }
     }
 

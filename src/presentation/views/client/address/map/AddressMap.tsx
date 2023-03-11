@@ -3,9 +3,13 @@ import { View, Text, StyleSheet, ToastAndroid, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import useViewModel from "./ViewModel";
 import Button from '../../../../components/Button';
+import { StackScreenProps } from '@react-navigation/stack';
+import { ClientStackParamList } from '../../../../navigation/ClientStackNavigator';
+interface Props extends StackScreenProps<ClientStackParamList, 'ClientAddressMapScreen'> { };
 
-const ClientAddressMapScreen = () => {
-    const { messagePermissions, position, mapRef, name, onRegionChange } = useViewModel();
+const ClientAddressMapScreen = ({ navigation, route }: Props) => {
+    const { messagePermissions, position, mapRef, name, onRegionChange, latitude
+        , longitude } = useViewModel();
 
     useEffect(() => {
         if (messagePermissions != '') {
@@ -30,7 +34,17 @@ const ClientAddressMapScreen = () => {
             </View>
 
             <View style={styles.buttonRef}>
-                <Button text="SELECCIONA TU UBICACIÓN" onPress={() => { }} />
+                <Button text="SELECCIONA TU UBICACIÓN" onPress={() => {
+                    navigation.navigate({
+                        name: 'AddressCreateScreen',
+                        merge: true,
+                        params: {
+                            refPoint: name,
+                            latitude: latitude,
+                            longitude: longitude
+                        }
+                    })
+                }} />
             </View>
         </View>
     )

@@ -16,7 +16,7 @@ export type ClientStackParamList = {
     ClientProductDetail: { product: Product },
     ClientShoppingCartScreen: undefined,
     AddressListScreen: undefined,
-    AddressCreateScreen: undefined,
+    AddressCreateScreen: { refPoint: string, latitude: number, longitude: number } | undefined,
     ClientAddressMapScreen: undefined
 }
 

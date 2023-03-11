@@ -1,4 +1,5 @@
 import { Rol } from "./Rol";
+import { Address } from './Address';
 
 export interface User {
     id?: string;
@@ -11,4 +12,5 @@ export interface User {
     image?: string,
     session_token?: string;
     roles?: Rol[];
+    address?: Address;
 }

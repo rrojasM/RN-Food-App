@@ -13,8 +13,16 @@ interface Props extends StackScreenProps<ClientStackParamList, 'AddressCreateScr
 
 export const AddressCreateScreen = ({ navigation, route }: Props) => {
 
-    const { address, location, references, onChange, loading, resMessage, saveAddress } = useViewModel();
+    const { address, location, refPoint, onChange, onChangeRefPoint, loading, resMessage, saveAddress } = useViewModel();
     const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(() => {
+        if (route.params?.refPoint) {
+            onChangeRefPoint(route.params?.refPoint, route.params?.latitude, route.params?.longitude);
+        }
+    }, [route.params?.refPoint]);
+
+
 
     useEffect(() => {
         if (resMessage !== '') {
@@ -51,8 +59,8 @@ export const AddressCreateScreen = ({ navigation, route }: Props) => {
                         placeholder='Referencias'
                         image={require('../../../../../assets/ref_point.png')}
                         keyboardType='default'
-                        property='references'
-                        value={references}
+                        property='refPoint'
+                        value={refPoint}
                         onChangeText={onChange}
                         editable={false}
                     />

@@ -2,11 +2,18 @@ import React, { useState, useEffect, useContext } from 'react'
 import { GetAddressByUserUseCase } from '../../../../../domain/useCases/address/GetAdressByUser';
 import { Address } from '../../../../../domain/entities/Address';
 import { UserContext } from '../../../../context/UserContext';
+import CreateOrderUseCase from '../../../../../domain/useCases/order/CreateOrder';
+import { Order } from '../../../../../domain/entities/Order';
+import { ShoppingContext } from '../../../../context/ShoppingContext';
+
+
 const CliendAddressListViewModel = () => {
 
     const [address, setAddress] = useState<Address[]>([]);
     const { user, saveUserSession, getUserSession } = useContext(UserContext);
+    const { shoppingProducts } = useContext(ShoppingContext)
     const [checked, setChecked] = useState('');
+    const [resMessage, setResMessage] = useState("")
 
     useEffect(() => {
         getAdress();
@@ -17,6 +24,16 @@ const CliendAddressListViewModel = () => {
         }
 
     }, [user]);
+
+    const createOrder = async () => {
+        const order: Order = {
+            id_client: user.id!,
+            id_address: user.address?.id!,
+            products: shoppingProducts
+        }
+        const result = await CreateOrderUseCase(order);
+        setResMessage(result.message)
+    }
 
     const getAdress = async () => {
         const res = await GetAddressByUserUseCase(user.id)
@@ -35,6 +52,8 @@ const CliendAddressListViewModel = () => {
         getAdress,
         checked,
         changeRadio,
+        createOrder,
+        resMessage
     }
 }
 

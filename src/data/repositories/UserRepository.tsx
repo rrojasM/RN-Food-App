@@ -44,4 +44,15 @@ export class UserRepositoryImpl implements UserRepository {
             return Promise.resolve(apiError);
         }
     }
+
+    async getDelivery(): Promise<User[]> {
+        try {
+            const res = await ApiDelivery.get<User[]>('/users/findDelivery');
+            return Promise.resolve(res.data);
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('ERROR: ', JSON.stringify(e.response?.data));
+            return Promise.resolve([]);
+        }
+    }
 }

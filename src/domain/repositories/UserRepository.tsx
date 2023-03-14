@@ -5,4 +5,6 @@ export interface UserRepository {
     updateUser(user: User): Promise<ResponseAPIDelivery>;
     updateUserWithImage(user: User, file: ImagePicker.ImageInfo): Promise<ResponseAPIDelivery>;
 
+    getDelivery(): Promise<User[]>;
+
 }

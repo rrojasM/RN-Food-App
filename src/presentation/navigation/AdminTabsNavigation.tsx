@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AdminCategoryListScreen from '../views/admin/category/list/CategoryList';
-import AdminOrderListScreen from '../views/admin/order/list/OrderList';
+import { AdminOrderListScreen } from '../views/admin/order/list/OrderList';
 import { ProfileInfoScreen } from '../views/profile/info/ProfileInfo';
 import { Image, TouchableOpacity } from 'react-native';
 import { AdminCategoryNavigator } from './AdminCategoryNavigator';
+import { AdminOrderNavigator } from './AdminOrderNavigator';
 
 const Tab = createBottomTabNavigator();
 export const AdminTabsNavigation = () => {
@@ -35,8 +36,8 @@ export const AdminTabsNavigation = () => {
                 )}
             />
             <Tab.Screen
-                name='AdminOrderList'
-                component={AdminOrderListScreen}
+                name='AdminOrderNavigator'
+                component={AdminOrderNavigator}
                 options={{
                     title: 'Pedidos',
                     tabBarLabel: 'Pedidos',
